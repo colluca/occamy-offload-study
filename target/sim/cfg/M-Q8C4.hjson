@@ -185,8 +185,8 @@
             // Hive 0
             {
                 icache: {
-                    size: 8, // total instruction cache size in kByte
-                    sets: 2, // number of ways
+                    size: 32, // total instruction cache size in kByte
+                    sets: 16, // number of ways
                     cacheline: 256 // word size in bits
                 },
                 cores: [
