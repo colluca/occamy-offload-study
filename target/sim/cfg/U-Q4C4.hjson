@@ -86,7 +86,7 @@
     }
     narrow_xbar_slv_id_width: 4,
     narrow_xbar_user_width: 5, // clog2(total number of clusters)
-    nr_s1_quadrant: 8,
+    nr_s1_quadrant: 4,
     s1_quadrant: {
       nr_clusters: 4,
       // number of pending transactions on the narrow/wide network
@@ -185,8 +185,8 @@
             // Hive 0
             {
                 icache: {
-                    size: 8, // total instruction cache size in kByte
-                    sets: 2, // number of ways
+                    size: 16, // total instruction cache size in kByte
+                    sets: 8, // number of ways
                     cacheline: 256 // word size in bits
                 },
                 cores: [
