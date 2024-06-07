@@ -13,9 +13,7 @@ def get_data_cfg_prefix(test):
     app = test['app']
     if app in ['kmeans', 'montecarlo']:
         return f'L{test["n_samples"]}'
-    elif app in ['atax']:
-        return f'L{test["M"]}'
-    elif app in ['gemm', 'correlation', 'covariance']:
+    elif app in ['gemm', 'correlation', 'covariance', 'atax']:
         return f'M{test["M"]}/N{test["N"]}'
     elif app in ['axpy']:
         return f'L{test["n"]}'

@@ -13,6 +13,7 @@ from SimResults import SimResults, SimRegion
 import numpy as np
 import pandas as pd
 import common
+from copy import deepcopy
 
 
 # TODO: make sure there are no gaps in the regions from the traces.
@@ -54,17 +55,17 @@ def get_mcast_label(mcast):
 
 class OffloadSimResults(SimResults):
 
-    def __init__(self, app, mcast, size, nr_clusters):
+    def __init__(self, app, mcast, nr_clusters, **kwargs):
         self.app = app
         self.mcast = mcast
-        self.size = size
         self.nr_clusters = nr_clusters
+        kwargs_path = '/'.join([f'{key}{val}' for key, val in kwargs.items()])
         if app == 'covariance':
-            super().__init__(f'runs/{app}/M{size}/N256/{common.get_mcast_prefix(mcast)}/N{nr_clusters}')
+            super().__init__(f'runs/{app}/{kwargs_path}/{common.get_mcast_prefix(mcast)}/N{nr_clusters}')
         elif app == 'gemm':
-            super().__init__(f'runs/{app}/M256/N{size}/{common.get_mcast_prefix(mcast)}/N{nr_clusters}')
+            super().__init__(f'runs/{app}/{kwargs_path}/{common.get_mcast_prefix(mcast)}/N{nr_clusters}')
         else:
-            super().__init__(f'runs/{app}/L{size}/{common.get_mcast_prefix(mcast)}/N{nr_clusters}')
+            super().__init__(f'runs/{app}/{kwargs_path}/{common.get_mcast_prefix(mcast)}/N{nr_clusters}')
 
     def get_send_job_information_time(self):
         return self.get_timespan(
@@ -213,14 +214,15 @@ def fig8(data):
     for i, app in enumerate(apps):
 
         # Create different curves for different sizes
-        for j, l in enumerate(sizes[i]):
+        for j, kwargs in enumerate(sizes[i]):
 
             # Get data
             x_data = ALL_NR_CLUSTER_CFGS
-            base_sims = [OffloadSimResults(app, False, l, x) for x in x_data]
-            ideal_sims = [OffloadSimResults(app, True, l, x) for x in x_data]
+            base_sims = [OffloadSimResults(app, False, x, **kwargs) for x in x_data]
+            ideal_sims = [OffloadSimResults(app, True, x, **kwargs) for x in x_data]
             t_ideal = [sim.get_ideal_time() for sim in ideal_sims]
             t_all = [sim.get_total_time() for sim in base_sims]
+            label = ', '.join([f'{key}={val}' for key, val in kwargs.items()])
 
             # Plot different curves for ideal runtime and actual runtime 
             p = ax[i].plot(
@@ -230,7 +232,7 @@ def fig8(data):
                 markersize=MARKER_SIZES[j],
                 linestyle='-',
                 linewidth=1,
-                label=f'L={l}'
+                label=label
             )
             ax[i].plot(
                 x_data,
@@ -240,7 +242,7 @@ def fig8(data):
                 linestyle='--',
                 linewidth=1,
                 color=p[0].get_color(),
-                label=f'L={l}, ideal'
+                label=f'{label}, ideal'
             )
         
         # Set subplot parameters
@@ -265,8 +267,8 @@ def fig8v2(sizes):
     for app in apps:
         data[app] = {}
         for nr_clusters in ALL_NR_CLUSTER_CFGS:
-            base_sim = OffloadSimResults(app, False, sizes[app], nr_clusters)
-            ideal_sim = OffloadSimResults(app, True, sizes[app], nr_clusters)
+            base_sim = OffloadSimResults(app, False, nr_clusters, **sizes[app])
+            ideal_sim = OffloadSimResults(app, True, nr_clusters, **sizes[app])
             data[app][nr_clusters] = base_sim.get_total_time() - ideal_sim.get_ideal_time()
     df = pd.DataFrame(data)
     df.rename(columns=get_app_label, inplace=True)
@@ -300,8 +302,8 @@ def fig9(sizes):
 
         # Get data
         x_coords = ALL_NR_CLUSTER_CFGS
-        base_sims = [OffloadSimResults(app, False, sizes[app], x) for x in x_coords]
-        mcast_sims = [OffloadSimResults(app, True, sizes[app], x) for x in x_coords]
+        base_sims = [OffloadSimResults(app, False, x, **sizes[app]) for x in x_coords]
+        mcast_sims = [OffloadSimResults(app, True, x, **sizes[app]) for x in x_coords]
         data = {
             get_mcast_label(False):
                 {sim.nr_clusters: sim.get_total_time() for sim in base_sims},
@@ -326,7 +328,7 @@ def fig9(sizes):
     plt.show()
 
 
-def fig10a(sizes):
+def fig9v2(sizes):
     apps = sizes.keys()
 
     # Get data
@@ -337,8 +339,8 @@ def fig10a(sizes):
         data[nr_clusters] = {}
         ideal[nr_clusters] = {}
         for app in apps:
-            base_sim = OffloadSimResults(app, False, sizes[app], nr_clusters)
-            mcast_sim = OffloadSimResults(app, True, sizes[app], nr_clusters)
+            base_sim = OffloadSimResults(app, False, nr_clusters, **sizes[app])
+            mcast_sim = OffloadSimResults(app, True, nr_clusters, **sizes[app])
             speedup = base_sim.get_total_time() / mcast_sim.get_total_time()
             ideal_speedup = base_sim.get_total_time() / mcast_sim.get_ideal_time()
             data[nr_clusters][app] = speedup
@@ -370,7 +372,6 @@ def fig10a(sizes):
     ax.legend(h[0:3], l[0:3])
 
     # Add custom labels on top of each bar
-    print(ax.patches)
     for i, p in enumerate(ax.patches[len(apps)*3:]):
         ax.annotate(f'{perc[i]:.0f}%', 
                     (p.get_x() + p.get_width() / 2., p.get_height()), 
@@ -384,11 +385,11 @@ def fig10a(sizes):
     plt.show()
 
 
-def fig10b(data):
-    apps, sizes_per_cluster = zip(*data.items())
+def fig10(data):
+    apps, appdata = zip(*data.items())
 
     # Create subplots
-    fig, ax = plt.subplots(len(apps), 1, layout="constrained")
+    fig, ax = plt.subplots(1, len(apps), layout="constrained")
 
     # Make sure ax is a list even when there is only one subplot
     if not hasattr(ax, '__len__'):
@@ -398,19 +399,20 @@ def fig10b(data):
     for j, app in enumerate(apps):
     
         all_x = []
+        key_to_scale = appdata[j]['key_to_scale']
+        sizes = appdata[j]['sizes']
 
         # Create different curves for different nr clusters
         for i, nr_clusters in enumerate(ALL_NR_CLUSTER_CFGS[2:]):
 
             # Get full problem size, from the size per cluster
-            x_data = [
-                size_per_cluster * nr_clusters
-                for size_per_cluster in sizes_per_cluster[j]
-            ]
+            x_data = deepcopy(sizes)
+            for size in x_data:
+                size[key_to_scale] *= nr_clusters
 
             # Get data
             sims = [
-                [OffloadSimResults(app, mcast, x, nr_clusters) for x in x_data]
+                [OffloadSimResults(app, mcast, nr_clusters, **x) for x in x_data]
                 for mcast in ALL_MCAST_CFGS
             ]
             t_baseline = [sim.get_total_time() for sim in sims[0]]
@@ -419,7 +421,7 @@ def fig10b(data):
 
             # Plot speedup
             ax[j].plot(
-                x_data,
+                [x[key_to_scale] for x in x_data],
                 speedup,
                 marker=MARKERS[i],
                 markersize=MARKER_SIZES[i],
@@ -429,19 +431,23 @@ def fig10b(data):
             )
 
             # Get all x values as combination of x values found in all curves
-            all_x += x_data
+            all_x += [x[key_to_scale] for x in x_data]
 
         # Set subplot parameters
         all_x = list(set(all_x))
         ax[j].set_xticks(all_x, [str(x) for x in all_x], rotation=-45)
         ax[j].set_ylim([1, ax[j].get_ylim()[1]])
-        ax[j].legend()
         ax[j].set_title(get_app_label(app))
         ax[j].grid(color='gainsboro', linewidth=0.5)
+
+    # Create shared legend
+    h, l = ax[0].get_legend_handles_labels()
+    fig.legend(h, l, ncol=1, loc="right center")
 
     # Set figure parameters
     fig.supxlabel('Problem size')
     fig.supylabel('Speedup')
+
     plt.show()
 
 
@@ -497,14 +503,14 @@ def recursive_map(func, data):
 
 
 def fig11(data):
-    app, size = next(iter(data.items()))
+    app, kwargs = next(iter(data.items()))
 
     # Only AXPY supported atm
     assert app == 'axpy', 'Only AXPY supported'
 
     # Get simulation results
     sims = [
-        [OffloadSimResults(app, mcast, size, nr_clusters) for nr_clusters in ALL_NR_CLUSTER_CFGS]
+        [OffloadSimResults(app, mcast, nr_clusters, **kwargs) for nr_clusters in ALL_NR_CLUSTER_CFGS]
         for mcast in ALL_MCAST_CFGS
     ]
 
@@ -557,50 +563,61 @@ def main():
     # Plot
     if plot == 'fig8':
         data = {
-            'axpy': [512, 1024],
-            'montecarlo': [512],
-            # 'atax': [1, 2],
-            'covariance': [1],
-            'gemm': [1],
-            # 'kmeans': [256],
+            'axpy': [{'L': 512}, {'L': 1024}],
+            'montecarlo': [{'L': 512}],
+            'covariance': [{'M': 1, 'N': 256}],
+            'gemm': [{'M': 256, 'N': 1}],
         }
         fig8(data)
     elif plot == 'fig8v2':
         sizes = {
-            'axpy': 1024,
-            'montecarlo': 512,
-            # 'atax': 1,
-            'covariance': 1,
-            'gemm': 1
+            'axpy': {'L': 1024},
+            'montecarlo': {'L': 512},
+            'atax': {'M': 1, 'N': 256},
+            'covariance': {'M': 1, 'N': 256},
+            'gemm': {'M': 256, 'N': 1},
         }
         fig8v2(sizes)
     elif plot == 'fig9':
         sizes = {
-            'axpy': 1024,
-            'montecarlo': 512,
-            # 'atax': 1,
-            'covariance': 1,
-            'gemm': 1
+            'axpy': {'L': 1024},
+            'montecarlo': {'L': 512},
+            'atax': {'M': 1, 'N': 256},
+            'covariance': {'M': 1, 'N': 256},
+            'gemm': {'M': 256, 'N': 1}
         }
         fig9(sizes)
-    elif plot == 'fig10a':
+    elif plot == 'fig9v2':
         sizes = {
-            'axpy': 1024,
-            'montecarlo': 512,
-            # 'atax': 1,
-            'covariance': 1,
-            'gemm': 1
+            'axpy': {'L': 1024},
+            'montecarlo': {'L': 512},
+            'atax': {'M': 1, 'N': 256},
+            'covariance': {'M': 1, 'N': 256},
+            'gemm': {'M': 256, 'N': 1}
         }
-        fig10a(sizes)
-    elif plot == 'fig10b':
+        fig9v2(sizes)
+    elif plot == 'fig10':
         data = {
-            'axpy': [32, 64, 128],
-            'montecarlo': [32, 64, 128],
-            # 'gemm': [32, 64, 128],
+            'axpy': {
+                'key_to_scale': 'L',
+                'sizes': [{'L': 32}, {'L': 64}, {'L': 128}]
+            },
+            'montecarlo': {
+                'key_to_scale': 'L',
+                'sizes': [{'L': 32}, {'L': 64}, {'L': 128}]
+            },
+            'gemm': {
+                'key_to_scale': 'M',
+                'sizes': [{'M': 8, 'N': 1}, {'M': 16, 'N': 1}, {'M': 32, 'N': 1}]
+            },
+            'atax': {
+                'key_to_scale': 'N',
+                'sizes': [{'M': 1, 'N': 8}, {'M': 1, 'N': 16}, {'M': 1, 'N': 32}]
+            }
         }
-        fig10b(data)
+        fig10(data)
     elif plot == 'fig11':
-        data = {'axpy': 1024}
+        data = {'axpy': {'L': 1024}}
         fig11(data)
 
 
