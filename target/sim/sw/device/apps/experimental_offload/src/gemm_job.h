@@ -82,25 +82,20 @@ void gemm_job_unified(void* job_args) {
     
     // Copy job operands (row block of A and full B)
     if (snrt_is_dm_core()) {
-        snrt_dma_load_2d_tile(
+        snrt_dma_load_1d_tile(
             local_a,
             (void *)args->a_ptr,
             snrt_cluster_idx(),
-            0,
-            args->m,
-            args->k,
-            args->k,
+            args->m * args->k,
             sizeof(double)
         );
-        snrt_dma_load_2d_tile(
+        snrt_dma_load_1d_tile(
             local_b,
             (void *)args->b_ptr,
             0,
-            0,
-            args->k,
-            args->n,
-            args->n,
-            sizeof(double));
+            args->k * args->n,
+            sizeof(double)
+        );
         snrt_dma_wait_all();
     }
 
@@ -121,14 +116,11 @@ void gemm_job_unified(void* job_args) {
 
     // Copy job results
     if (snrt_is_dm_core()) {
-        snrt_dma_store_2d_tile(
+        snrt_dma_store_1d_tile(
             (void *)args->c_ptr,
             local_c,
             snrt_cluster_idx(),
-            0,
-            args->m,
-            args->n,
-            args->n,
+            args->m * args->n,
             sizeof(double)
         );
         snrt_dma_wait_all();
