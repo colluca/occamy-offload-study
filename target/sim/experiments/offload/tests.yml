@@ -1,0 +1,73 @@
+# Copyright 2023 ETH Zurich and University of Bologna.
+# Licensed under the Apache License, Version 2.0, see LICENSE for details.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Luca Colagrande <colluca@iis.ee.ethz.ch>
+
+runs:
+  ########
+  # GEMM #
+  ########
+  - app: gemm
+    N: 16
+    n_clusters_to_use: 2
+    multicast: false
+  - app: gemm
+    N: 16
+    n_clusters_to_use: 2
+    multicast: true
+  ########
+  # AXPY #
+  ########
+  - app: axpy
+    n: 16
+    n_clusters_to_use: 2
+    multicast: false
+  - app: axpy
+    n: 16
+    n_clusters_to_use: 2
+    multicast: true
+  ###############
+  # Monte Carlo #
+  ###############
+  - app: montecarlo
+    n_samples: 32
+    n_clusters_to_use: 2
+    multicast: false
+  - app: montecarlo
+    n_samples: 32
+    n_clusters_to_use: 2
+    multicast: true
+  ###########
+  # K-Means #
+  ###########
+  - app: kmeans
+    n_samples: 16
+    n_clusters_to_use: 2
+    multicast: false
+  - app: kmeans
+    n_samples: 16
+    n_clusters_to_use: 2
+    multicast: true
+  ###############
+  # Correlation #
+  ###############
+  - app: correlation
+    M: 16
+    n_clusters_to_use: 2
+    multicast: false
+  - app: correlation
+    M: 16
+    n_clusters_to_use: 2
+    multicast: true
+  ##############
+  # Covariance #
+  ##############
+  - app: covariance
+    M: 16
+    n_clusters_to_use: 2
+    multicast: false
+  - app: covariance
+    M: 16
+    n_clusters_to_use: 2
+    multicast: true

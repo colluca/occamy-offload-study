@@ -5,53 +5,65 @@
 # Luca Colagrande <colluca@iis.ee.ethz.ch>
 
 runs:
-# Strong scaling (implicit M=256)
+# Strong scaling
   # - app: gemm
   #   N: 1
+  #   M: 256
   #   n_clusters_to_use: 1
   #   multicast: false
   # - app: gemm
   #   N: 1
+  #   M: 256
   #   n_clusters_to_use: 2
   #   multicast: false
   # - app: gemm
   #   N: 1
+  #   M: 256
   #   n_clusters_to_use: 4
   #   multicast: false
   # - app: gemm
   #   N: 1
+  #   M: 256
   #   n_clusters_to_use: 8
   #   multicast: false
   # - app: gemm
   #   N: 1
+  #   M: 256
   #   n_clusters_to_use: 16
   #   multicast: false
   # - app: gemm
   #   N: 1
+  #   M: 256
   #   n_clusters_to_use: 32
   #   multicast: false
   # - app: gemm
   #   N: 1
+  #   M: 256
   #   n_clusters_to_use: 1
   #   multicast: true
   # - app: gemm
   #   N: 1
+  #   M: 256
   #   n_clusters_to_use: 2
   #   multicast: true
   # - app: gemm
   #   N: 1
+  #   M: 256
   #   n_clusters_to_use: 4
   #   multicast: true
   # - app: gemm
   #   N: 1
+  #   M: 256
   #   n_clusters_to_use: 8
   #   multicast: true
   # - app: gemm
   #   N: 1
+  #   M: 256
   #   n_clusters_to_use: 16
   #   multicast: true
   # - app: gemm
   #   N: 1
+  #   M: 256
   #   n_clusters_to_use: 32
   #   multicast: true
 # Weak scaling
@@ -175,3 +187,94 @@ runs:
   #   M: 1024
   #   n_clusters_to_use: 32
   #   multicast: true
+# Modeling experiments
+  - app: gemm
+    N: 2
+    M: 256
+    n_clusters_to_use: 1
+    multicast: true
+  - app: gemm
+    N: 2
+    M: 256
+    n_clusters_to_use: 2
+    multicast: true
+  - app: gemm
+    N: 2
+    M: 256
+    n_clusters_to_use: 4
+    multicast: true
+  - app: gemm
+    N: 2
+    M: 256
+    n_clusters_to_use: 8
+    multicast: true
+  - app: gemm
+    N: 2
+    M: 256
+    n_clusters_to_use: 16
+    multicast: true
+  - app: gemm
+    N: 2
+    M: 256
+    n_clusters_to_use: 32
+    multicast: true
+  - app: gemm
+    N: 3
+    M: 256
+    n_clusters_to_use: 1
+    multicast: true
+  - app: gemm
+    N: 3
+    M: 256
+    n_clusters_to_use: 2
+    multicast: true
+  - app: gemm
+    N: 3
+    M: 256
+    n_clusters_to_use: 4
+    multicast: true
+  - app: gemm
+    N: 3
+    M: 256
+    n_clusters_to_use: 8
+    multicast: true
+  - app: gemm
+    N: 3
+    M: 256
+    n_clusters_to_use: 16
+    multicast: true
+  - app: gemm
+    N: 3
+    M: 256
+    n_clusters_to_use: 32
+    multicast: true
+  - app: gemm
+    N: 4
+    M: 256
+    n_clusters_to_use: 1
+    multicast: true
+  - app: gemm
+    N: 4
+    M: 256
+    n_clusters_to_use: 2
+    multicast: true
+  - app: gemm
+    N: 4
+    M: 256
+    n_clusters_to_use: 4
+    multicast: true
+  - app: gemm
+    N: 4
+    M: 256
+    n_clusters_to_use: 8
+    multicast: true
+  - app: gemm
+    N: 4
+    M: 256
+    n_clusters_to_use: 16
+    multicast: true
+  - app: gemm
+    N: 4
+    M: 256
+    n_clusters_to_use: 32
+    multicast: true

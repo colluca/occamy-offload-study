@@ -247,7 +247,7 @@ def main():
     # Build HW and SW for every test and run simulations
     if not args.post_process_only:
         build_sw(tests, dry_run=args.dry_run)
-        # build_hw(tests, dry_run=args.dry_run)
+        build_hw(tests, dry_run=args.dry_run)
         status = sim_utils.run_simulations(simulations,
                                            n_procs=args.n_procs,
                                            dry_run=args.dry_run,

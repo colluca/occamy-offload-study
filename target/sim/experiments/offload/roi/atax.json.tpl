@@ -71,16 +71,12 @@
         "thread": "${f'dma_{1 + 9*i + 8}'}",
         "roi": [
             // Iteration 1
-            {"idx": -10, "label": "A in"},
-            {"idx": -9, "label": "x in"},
-            {"idx": -8, "label": "y tile in"},
-            {"idx": -7, "label": "tmp in"},
-            {"idx": -6, "label": "y out"},
+            {"idx": -6, "label": "A in"},
+            {"idx": -5, "label": "x in"},
+            {"idx": -4, "label": "y out"},
             // Iteration 2
-            {"idx": -5, "label": "A in"},
-            {"idx": -4, "label": "x in"},
-            {"idx": -3, "label": "y tile in"},
-            {"idx": -2, "label": "tmp in"},
+            {"idx": -3, "label": "A in"},
+            {"idx": -2, "label": "x in"},
             {"idx": -1, "label": "y out"},
         ]
     },
@@ -89,18 +85,14 @@
         "thread": "${f'dma_{1 + 9*i + 8}'}",
         "roi": [
             // Iteration 1
-            {"idx": -12, "label": "job info"},
-            {"idx": -11, "label": "A in"},
-            {"idx": -10, "label": "x in"},
-            {"idx": -9, "label": "y tile in"},
-            {"idx": -8, "label": "tmp in"},
-            {"idx": -7, "label": "y out"},
+            {"idx": -8, "label": "job info"},
+            {"idx": -7, "label": "A in"},
+            {"idx": -6, "label": "x in"},
+            {"idx": -5, "label": "y out"},
             // Iteration 2
-            {"idx": -6, "label": "job info"},
-            {"idx": -5, "label": "A in"},
-            {"idx": -4, "label": "x in"},
-            {"idx": -3, "label": "y tile in"},
-            {"idx": -2, "label": "tmp in"},
+            {"idx": -4, "label": "job info"},
+            {"idx": -3, "label": "A in"},
+            {"idx": -2, "label": "x in"},
             {"idx": -1, "label": "y out"},
         ]
     },

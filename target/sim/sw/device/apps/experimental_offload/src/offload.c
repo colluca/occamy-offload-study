@@ -37,20 +37,31 @@ __thread job_func_t jobs[N_JOB_TYPES] = {
 
 static inline void run_job() {
     // Invoke job
+    job_t *local_job, *remote_job;
+    uint32_t job_id;
 #if defined(SUPPORTS_MULTICAST) && defined(USE_MULTICAST)
-    job_t* job = (job_t *)local_job_addr;
-    uint32_t job_id = job->id;
+    // Ensure DM core loads job ID first, without facing contention
+    // with the other cores, so it can start loading job operands earlier
+    if (snrt_is_dm_core()) {
+        local_job = (job_t *)local_job_addr;
+        job_id = local_job->id;
+        snrt_cluster_hw_barrier();
+    } else {
+        snrt_cluster_hw_barrier();
+        local_job = (job_t *)local_job_addr;
+        job_id = local_job->id;        
+    }
     if (snrt_is_dm_core()) snrt_mcycle();
     if (snrt_is_dm_core()) snrt_mcycle();
-    jobs[job_id]((void *)&job->args);
+    jobs[job_id]((void *)&local_job->args);
     snrt_cluster_hw_barrier();
     if (snrt_is_dm_core()) {
         snrt_mcycle();
-        return_to_cva6_accelerated(job->offload_id);
+        return_to_cva6_accelerated(local_job->offload_id);
     }
 #else
-    job_t* remote_job = (job_t*)remote_job_addr;
-    job_t* local_job = (job_t *)local_job_addr;
+    remote_job = (job_t*)remote_job_addr;
+    local_job = (job_t *)local_job_addr;
     if (snrt_is_dm_core()) {
         // Load job ID to lookup size of args
         local_job->id = remote_job->id;

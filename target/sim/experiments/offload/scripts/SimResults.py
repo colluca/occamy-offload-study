@@ -22,6 +22,16 @@ class SimRegion():
         self.occurrence = occurrence
 
 
+class MissingRegionError(Exception):
+ 
+    def __init__(self, region):
+        self.region = region
+ 
+    def __str__(self):
+        return f"Region {self.region.label} (occurrence {self.region.occurrence}) not found " \
+               f"in thread {self.region.thread}."
+
+
 class SimResults():
 
     def __init__(self, sim_dir):
@@ -55,8 +65,7 @@ class SimResults():
                 else:
                     cnt += 1
         if reg_idx is None:
-            raise ValueError(f"Region {region.label} (occurrence {region.occurrence}) not found "
-                             f"in thread {region.thread}.")
+            raise MissingRegionError(region)
         # Get metric
         if metric in ['tstart', 'tend']:
             return self.performance_data[region.thread][reg_idx][metric]

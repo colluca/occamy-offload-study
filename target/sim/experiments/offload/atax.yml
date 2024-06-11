@@ -8,218 +8,273 @@ runs:
 # Strong scaling
   # - app: atax
   #   M: 1
+  #   N: 256
   #   n_clusters_to_use: 1
   #   multicast: false
   # - app: atax
   #   M: 1
+  #   N: 256
   #   n_clusters_to_use: 2
   #   multicast: false
   # - app: atax
   #   M: 1
+  #   N: 256
   #   n_clusters_to_use: 4
   #   multicast: false
   # - app: atax
   #   M: 1
+  #   N: 256
   #   n_clusters_to_use: 8
   #   multicast: false
   # - app: atax
   #   M: 1
+  #   N: 256
   #   n_clusters_to_use: 16
   #   multicast: false
   # - app: atax
   #   M: 1
+  #   N: 256
   #   n_clusters_to_use: 32
   #   multicast: false
   # - app: atax
   #   M: 1
+  #   N: 256
   #   n_clusters_to_use: 1
   #   multicast: true
   # - app: atax
   #   M: 1
+  #   N: 256
   #   n_clusters_to_use: 2
   #   multicast: true
   # - app: atax
   #   M: 1
+  #   N: 256
   #   n_clusters_to_use: 4
   #   multicast: true
   # - app: atax
   #   M: 1
+  #   N: 256
   #   n_clusters_to_use: 8
   #   multicast: true
   # - app: atax
   #   M: 1
+  #   N: 256
   #   n_clusters_to_use: 16
   #   multicast: true
   # - app: atax
   #   M: 1
-  #   n_clusters_to_use: 32
-  #   multicast: true
-  # - app: atax
-  #   M: 2
-  #   n_clusters_to_use: 1
-  #   multicast: false
-  # - app: atax
-  #   M: 2
-  #   n_clusters_to_use: 2
-  #   multicast: false
-  # - app: atax
-  #   M: 2
-  #   n_clusters_to_use: 4
-  #   multicast: false
-  # - app: atax
-  #   M: 2
-  #   n_clusters_to_use: 8
-  #   multicast: false
-  # - app: atax
-  #   M: 2
-  #   n_clusters_to_use: 16
-  #   multicast: false
-  # - app: atax
-  #   M: 2
-  #   n_clusters_to_use: 32
-  #   multicast: false
-  # - app: atax
-  #   M: 2
-  #   n_clusters_to_use: 1
-  #   multicast: true
-  # - app: atax
-  #   M: 2
-  #   n_clusters_to_use: 2
-  #   multicast: true
-  # - app: atax
-  #   M: 2
-  #   n_clusters_to_use: 4
-  #   multicast: true
-  # - app: atax
-  #   M: 2
-  #   n_clusters_to_use: 8
-  #   multicast: true
-  # - app: atax
-  #   M: 2
-  #   n_clusters_to_use: 16
-  #   multicast: true
-  # - app: atax
-  #   M: 2
+  #   N: 256
   #   n_clusters_to_use: 32
   #   multicast: true
 # Weak scaling
+  # - app: atax
+  #   M: 1
+  #   N: 32
+  #   n_clusters_to_use: 4
+  #   multicast: false
+  # - app: atax
+  #   M: 1
+  #   N: 64
+  #   n_clusters_to_use: 4
+  #   multicast: false
+  # - app: atax
+  #   M: 1
+  #   N: 128
+  #   n_clusters_to_use: 4
+  #   multicast: false
+  # - app: atax
+  #   M: 1
+  #   N: 64
+  #   n_clusters_to_use: 8
+  #   multicast: false
+  # - app: atax
+  #   M: 1
+  #   N: 128
+  #   n_clusters_to_use: 8
+  #   multicast: false
+  # - app: atax
+  #   M: 1
+  #   N: 256
+  #   n_clusters_to_use: 8
+  #   multicast: false
+  # - app: atax
+  #   M: 1
+  #   N: 128
+  #   n_clusters_to_use: 16
+  #   multicast: false
+  # - app: atax
+  #   M: 1
+  #   N: 256
+  #   n_clusters_to_use: 16
+  #   multicast: false
+  # - app: atax
+  #   M: 1
+  #   N: 512
+  #   n_clusters_to_use: 16
+  #   multicast: false
+  # - app: atax
+  #   M: 1
+  #   N: 256
+  #   n_clusters_to_use: 32
+  #   multicast: false
+  # - app: atax
+  #   M: 1
+  #   N: 512
+  #   n_clusters_to_use: 32
+  #   multicast: false
+  # - app: atax
+  #   M: 1
+  #   N: 1024
+  #   n_clusters_to_use: 32
+  #   multicast: false
+  # - app: atax
+  #   M: 1
+  #   N: 32
+  #   n_clusters_to_use: 4
+  #   multicast: true
+  # - app: atax
+  #   M: 1
+  #   N: 64
+  #   n_clusters_to_use: 4
+  #   multicast: true
+  # - app: atax
+  #   M: 1
+  #   N: 128
+  #   n_clusters_to_use: 4
+  #   multicast: true
+  # - app: atax
+  #   M: 1
+  #   N: 64
+  #   n_clusters_to_use: 8
+  #   multicast: true
+  # - app: atax
+  #   M: 1
+  #   N: 128
+  #   n_clusters_to_use: 8
+  #   multicast: true
+  # - app: atax
+  #   M: 1
+  #   N: 256
+  #   n_clusters_to_use: 8
+  #   multicast: true
+  # - app: atax
+  #   M: 1
+  #   N: 128
+  #   n_clusters_to_use: 16
+  #   multicast: true
+  # - app: atax
+  #   M: 1
+  #   N: 256
+  #   n_clusters_to_use: 16
+  #   multicast: true
+  # - app: atax
+  #   M: 1
+  #   N: 512
+  #   n_clusters_to_use: 16
+  #   multicast: true
+  # - app: atax
+  #   M: 1
+  #   N: 256
+  #   n_clusters_to_use: 32
+  #   multicast: true
+  # - app: atax
+  #   M: 1
+  #   N: 512
+  #   n_clusters_to_use: 32
+  #   multicast: true
+  # - app: atax
+  #   M: 1
+  #   N: 1024
+  #   n_clusters_to_use: 32
+  #   multicast: true
+# Modeling experiments
   - app: atax
-    M: 1
-    N: 32
+    M: 2
+    N: 256
+    n_clusters_to_use: 1
+    multicast: true
+  - app: atax
+    M: 2
+    N: 256
+    n_clusters_to_use: 2
+    multicast: true
+  - app: atax
+    M: 2
+    N: 256
     n_clusters_to_use: 4
-    multicast: false
+    multicast: true
   - app: atax
-    M: 1
-    N: 64
-    n_clusters_to_use: 4
-    multicast: false
-  - app: atax
-    M: 1
-    N: 128
-    n_clusters_to_use: 4
-    multicast: false
-  - app: atax
-    M: 1
-    N: 64
-    n_clusters_to_use: 8
-    multicast: false
-  - app: atax
-    M: 1
-    N: 128
-    n_clusters_to_use: 8
-    multicast: false
-  - app: atax
-    M: 1
+    M: 2
     N: 256
     n_clusters_to_use: 8
-    multicast: false
+    multicast: true
   - app: atax
-    M: 1
-    N: 128
-    n_clusters_to_use: 16
-    multicast: false
-  - app: atax
-    M: 1
+    M: 2
     N: 256
     n_clusters_to_use: 16
-    multicast: false
+    multicast: true
   - app: atax
-    M: 1
-    N: 512
-    n_clusters_to_use: 16
-    multicast: false
-  - app: atax
-    M: 1
+    M: 2
     N: 256
     n_clusters_to_use: 32
-    multicast: false
+    multicast: true
   - app: atax
-    M: 1
-    N: 512
-    n_clusters_to_use: 32
-    multicast: false
+    M: 3
+    N: 256
+    n_clusters_to_use: 1
+    multicast: true
   - app: atax
-    M: 1
-    N: 1024
-    n_clusters_to_use: 32
-    multicast: false
+    M: 3
+    N: 256
+    n_clusters_to_use: 2
+    multicast: true
   - app: atax
-    M: 1
-    N: 32
+    M: 3
+    N: 256
     n_clusters_to_use: 4
     multicast: true
   - app: atax
-    M: 1
-    N: 64
-    n_clusters_to_use: 4
-    multicast: true
-  - app: atax
-    M: 1
-    N: 128
-    n_clusters_to_use: 4
-    multicast: true
-  - app: atax
-    M: 1
-    N: 64
-    n_clusters_to_use: 8
-    multicast: true
-  - app: atax
-    M: 1
-    N: 128
-    n_clusters_to_use: 8
-    multicast: true
-  - app: atax
-    M: 1
+    M: 3
     N: 256
     n_clusters_to_use: 8
     multicast: true
   - app: atax
-    M: 1
-    N: 128
-    n_clusters_to_use: 16
-    multicast: true
-  - app: atax
-    M: 1
+    M: 3
     N: 256
     n_clusters_to_use: 16
     multicast: true
   - app: atax
-    M: 1
-    N: 512
-    n_clusters_to_use: 16
-    multicast: true
-  - app: atax
-    M: 1
+    M: 3
     N: 256
     n_clusters_to_use: 32
     multicast: true
   - app: atax
-    M: 1
-    N: 512
-    n_clusters_to_use: 32
+    M: 4
+    N: 256
+    n_clusters_to_use: 1
     multicast: true
   - app: atax
-    M: 1
-    N: 1024
+    M: 4
+    N: 256
+    n_clusters_to_use: 2
+    multicast: true
+  - app: atax
+    M: 4
+    N: 256
+    n_clusters_to_use: 4
+    multicast: true
+  - app: atax
+    M: 4
+    N: 256
+    n_clusters_to_use: 8
+    multicast: true
+  - app: atax
+    M: 4
+    N: 256
+    n_clusters_to_use: 16
+    multicast: true
+  - app: atax
+    M: 4
+    N: 256
     n_clusters_to_use: 32
     multicast: true
